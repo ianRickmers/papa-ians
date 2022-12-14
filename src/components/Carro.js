@@ -7,7 +7,7 @@ const Carro = ({ closeCart, show, cart, clean, deleteI }) => {
 
     const guardarCarro = () => {
         localStorage.setItem('carro', JSON.stringify(cart));
-        window.location.href = "/pago";
+        window.location.href = "/payment";
     };
 
     const [total, setTotal] = useState(0);

@@ -294,13 +294,9 @@ const Personalizada = ({cart,addToCartP}) => {
                                         bgcolor: '#037d50',
                                         color: '#ffffff',
                                     },
-                                    //gray when hover when not selected
-                                    '& .MuiToggleButton-root:hover': {
-                                        bgcolor: '#e0e0e0',
-                                    },
-                                    //light green hover when selected
+                                    // light green hover when selected
                                     '& .Mui-selected:hover': {
-                                        bgcolor: '#169350',
+                                        bgcolor: '#05c880',
                                     },
                                 }}
                             >
@@ -346,15 +342,10 @@ const Personalizada = ({cart,addToCartP}) => {
                                         bgcolor: '#037d50',
                                         color: '#ffffff',
                                     },
-                                    //gray when hover when not selected
-                                    '& .MuiToggleButton-root:hover': {
-                                        bgcolor: '#e0e0e0',
-                                    },
-                                    //light green hover when selected
+                                    // light green hover when selected
                                     '& .Mui-selected:hover': {
-                                        bgcolor: '#169350',
+                                        bgcolor: '#05c880',
                                     },
-
                                 }}
                             >
                                 {vegetales.map((vegetal, index) => {

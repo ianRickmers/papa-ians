@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import Index from './pages/Index';
 import Store from './pages/Store';
 import Custom from './pages/Custom';
+import Payment from './pages/Payment';
 import { useState } from 'react';
 
 function App() {
@@ -107,6 +108,7 @@ function App() {
           <Route path="/" element={<Index />} exact />
           <Route path="/store" element={<Store addToCart={addToCart} addToCartByS={addToCartBebidaYSalsa}/>} exact />
           <Route path="/custom" element={<Custom cart={cart} addToCartP={addToCartPersonalizada}/>} exact />
+          <Route path="/payment" element={<Payment cart={cart} />} exact />
         </Routes>
       </Container>
     </Layout>
