@@ -1,5 +1,6 @@
-import { Box, Button, Container, FormControlLabel, Grid, Paper, Radio, RadioGroup, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material"
+import { Alert, Box, Button, Container, FormControlLabel, Grid, Paper, Radio, RadioGroup, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material"
 import { useState } from "react";
+import { styled } from "@mui/material/styles";
 
 const Personalizada = ({cart,addToCartP}) => {
     const quesos = [
@@ -113,6 +114,7 @@ const Personalizada = ({cart,addToCartP}) => {
     ];
 
     const [contadorVegetales, setContadorVegetales] = useState(2);
+    const [showAlert, setShowAlert] = useState(false);
 
     const handleContadorVegetales = () => {
         setContadorVegetales(2 - detalle.vegetales.length);
@@ -200,8 +202,13 @@ const Personalizada = ({cart,addToCartP}) => {
             "precio": precio,
             "qty": qty
         }
-        // add to cart
+        setShowAlert(true);
         addToCartP(order);
+        //dissapear alert after 0.5 seconds
+        setTimeout(() => {
+            setShowAlert(false);
+        }
+            , 1000);
     };
 
 
@@ -556,14 +563,33 @@ const Personalizada = ({cart,addToCartP}) => {
                                 width: 420,
                             }} onClick={generarOrder}>+ Agregar al carro</Button>
                         </Paper>
+
                         {/* agregar al carrito */}
 
                     </Grid>
                 </Grid>
             </Container>
+            {showAlert===true ? <AlertFix severity="success">Pizza agregada al carrito!</AlertFix>: null}
         </Box>
 
     );
 };
+
+const AlertFix = styled(Alert)(({ theme }) => ({
+    //always show on the bottom of the page
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    //centered
+    margin: 'auto',
+    //width
+    width: '50%',
+    //rounded corners
+    borderRadius: 2,
+    zIndex: 1
+    //transition on show
+
+}));
 
 export default Personalizada;

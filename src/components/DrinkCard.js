@@ -1,11 +1,12 @@
-import { Button, Card, CardActions, CardContent, CardMedia, TextField, Typography } from "@mui/material";
+import { Alert, Button, Card, CardActions, CardContent, CardMedia, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import { styled } from "@mui/material/styles";
 
 export default function DrinkCard({ drink, addToCart}) {
 
 
     const [qty, setQty] = useState(1);
-
+    const [showAlert, setShowAlert] = useState(false);
     const handleQty = (event) => {
         let newQty = parseInt(event.target.value);
         setQty(newQty);
@@ -29,7 +30,14 @@ export default function DrinkCard({ drink, addToCart}) {
             "cantidad": qty,
             "precio": price
         };
+        setShowAlert(true);
         addToCart(order);
+        //dissapear alert after 0.5 seconds
+        setTimeout(() => {
+            setShowAlert(false);
+        }
+            , 1000);
+
     };
     return (
         <div>
@@ -84,6 +92,24 @@ export default function DrinkCard({ drink, addToCart}) {
                     }} onClick={generarOrder} >+ Agregar al carrito</Button>
                 </CardActions>
             </Card>
+            {showAlert===true ? <AlertFix severity="success">Pizza agregada al carrito!</AlertFix>: null}
         </div>
     )
 }
+
+const AlertFix = styled(Alert)(({ theme }) => ({
+    //always show on the bottom of the page
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    //centered
+    margin: 'auto',
+    //width
+    width: '50%',
+    //rounded corners
+    borderRadius: 2,
+    zIndex: 1
+    //transition on show
+
+}));

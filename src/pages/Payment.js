@@ -1,7 +1,7 @@
-import { RadioGroup, FormControlLabel, Radio, FormControl, TextField, Typography, Grid, Container, Paper, Button } from "@mui/material";
+import { RadioGroup, FormControlLabel, Radio, FormControl, TextField, Typography, Grid, Container, Paper, Button, Select, MenuItem } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
+import swal from "sweetalert";
 
 const Pago = ({ cart }) => {
     const [total, setTotal] = useState(0);
@@ -18,10 +18,6 @@ const Pago = ({ cart }) => {
         getTotal();
     });
 
-    const [qty, setQty] = useState(total);
-    const handleQty = (e) => {
-        setQty(e.target.value);
-    };
 
     const [metodo, setMetodo] = useState("efectivo");
     const handleMetodo = (e) => {
@@ -33,6 +29,11 @@ const Pago = ({ cart }) => {
         setEntrega(e.target.value);
     };
 
+    const [propina, setPropina] = useState(0);
+    const handlePropina = (e) => {
+        let newPropina = parseFloat(e.target.value);
+        setPropina(newPropina);
+    };
 
     const [datos, setDatos] = useState({
         "nombre": "",
@@ -77,7 +78,12 @@ const Pago = ({ cart }) => {
     };
 
     const realizarPago = () => {
-        alert("Pago realizado con exito");
+        swal({
+            title: "Orden realizada!",
+            text: "Orden realizado con éxito!",
+            icon: "success",
+            button: "Ok",
+        });
     };
 
     const paperTarjeta = () => {
@@ -145,35 +151,11 @@ const Pago = ({ cart }) => {
         );
     };
 
-    const paperEfectivo = () => {
-        return (
-            <Paper sx={{ p: 1, mt: 1 }}>
-                <Typography variant="h6">¿Con cuanto pagará?</Typography>
-                <Box
-                    sx={{ display: 'flex', alignItems: 'center' }}
-                >
-                    <Typography variant="subtitle1" sx={{ mr: 1, mt: 1.5 }}>Total: ${total}, pagará con: </Typography>
-                    <TextField
-                        sx={{ mt: 2 }}
-                        id="apagar"
-                        type="number"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        inputProps={{ min: total, max: 2 * total, value: qty }}
-                        placeholder={total.toString()}
-                        size="small"
-                        onChange={handleQty}
-                    />
-                </Box>
-                <Typography variant="subtitle1" sx={{ mt: 1.5 }}>Su cambio será: ${qty - total}</Typography>
-            </Paper>
-        );
-    };
+
 
     const paperDomicilio = () => {
-        return(
-            <Paper sx={{ p: 1, mt: 1 }}>
+        return (
+            <Paper sx={{ p: 1, mt: 1, boxShadow: 3 }}>
                 <Typography variant="h6">Su dirección</Typography>
                 <FormControl sx={{ display: "inline-block" }}>
                     <TextField sx={{ mt: 2 }}
@@ -220,16 +202,47 @@ const Pago = ({ cart }) => {
         );
     };
 
+    const paperRetiro = () => {
+        return (
+            <Paper sx={{ p: 1, mt: 1, boxShadow: 3 }}>
+                <Typography variant="h6">¿En que sucursal desea retirar su pedido?</Typography>
+                <Select defaultValue={1} sx={{
+                    //box width
+                    width: 350,
+                    //placeholder
+                }}>
+                    <MenuItem value={1}>Luis Montaner 544</MenuItem>
+                    <MenuItem value={2}>José Domingo Cañas 2280</MenuItem>
+                </Select>
+            </Paper>
+        );
+    };
+
     return (
+
         <Box
             px={{ xs: 2, sm: 10 }}
             py={{ xs: 5, sm: 7 }}
+            sx={{
+                mt: 5,
+                mb: 5.5,
+                //white background
+                bgcolor: "#fff",
+                //border radius
+                borderRadius: 7,
+                //shadow
+                boxShadow: 3,
+            }}
         >
-            <Typography sx={{ ml: 3 }} variant="h4">Pago</Typography>
+            <Typography sx={{ ml: 3, }} variant="h4" fontFamily={"roboto"}>Pago</Typography>
             <Container maxWidth="xl">
                 <Grid container spacing={3}>
                     <Grid item xs={6} sm={7}>
-                        <Paper sx={{ p: 1, mt: 1 }}>
+                        <Paper sx={{
+                            p: 1, mt: 1,
+                            //shadow
+                            boxShadow: 3,
+                        }}>
                             <Typography variant="h6">Datos de envío</Typography>
                             <FormControl sx={{ display: "inline-block" }}>
                                 <TextField sx={{ mt: 2 }}
@@ -277,7 +290,7 @@ const Pago = ({ cart }) => {
                                 />
                             </FormControl>
                         </Paper>
-                        <Paper sx={{ p: 1, mt: 1 }}>
+                        <Paper sx={{ p: 1, mt: 1, boxShadow: 3, }}>
                             <Typography variant="h6">Método de pago</Typography>
                             <RadioGroup
                                 row
@@ -321,10 +334,81 @@ const Pago = ({ cart }) => {
                             </RadioGroup>
                         </Paper>
                         {metodo === "tarjeta" ? paperTarjeta() : null}
-                        {metodo === "efectivo" ? paperEfectivo() : null}
+                        <Paper sx={{ p: 1, mt: 1, boxShadow: 3 }}>
+                            <Typography variant="h6">Tipo de recibo</Typography>
+                            <RadioGroup
+                                row
+                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                name="row-radio-buttons-group"
+                                sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', itemsAlign: 'center' }}
+                                
+                            >
+                                <Paper sx={{ p: 1, mr: 1 }}>
+                                    <FormControlLabel
+                                        key="1"
+                                        value="Boleta"
+                                        name="Boleta"
+                                        label={"Boleta"}
+                                        control={<Radio />}
+                                    />
+                                </Paper>
+                                <Paper sx={{ p: 1, mr: 1, ml: 1 }}>
+                                    <FormControlLabel
+                                        key="2"
+                                        value="Factura"
+                                        name="Factura"
+                                        label={"Factura"}
+                                        control={<Radio />}
+                                    />
+                                </Paper>
+                            </RadioGroup>
+
+                        </Paper>
+                        <Paper sx={{ p: 1, mt: 1, boxShadow: 3 }}>
+                            <Typography variant="h6">Propina</Typography>
+                            <RadioGroup
+                                row
+                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                name="row-radio-buttons-group"
+                                sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', itemsAlign: 'center' }}
+                                
+                            >
+                                <Paper sx={{ p: 1, mr: 1 }}>
+                                    <FormControlLabel
+                                        key="1"
+                                        value="0"
+                                        name="%0"
+                                        label={"Nada"}
+                                        onChange={handlePropina}
+                                        control={<Radio />}
+                                    />
+                                </Paper>
+                                <Paper sx={{ p: 1, mr: 1, ml: 1 }}>
+                                    <FormControlLabel
+                                        key="2"
+                                        value= "0.05"
+                                        name="5%"
+                                        label={"5%"}
+                                        onChange={handlePropina}
+                                        control={<Radio />}
+                                    />
+                                </Paper>
+                                <Paper sx={{ p: 1, mr: 1, ml: 1 }}>
+                                    <FormControlLabel
+                                        key="3"
+                                        value="0.10"
+                                        name="10%"
+                                        label={"10%"}
+                                        onChange={handlePropina}
+                                        control={<Radio />}
+                                    />
+                                </Paper>
+                            </RadioGroup>
+
+                        </Paper>
                     </Grid>
                     <Grid item xs={6} sm={5}>
-                        <Paper sx={{ p: 1, mt: 1 }}>
+                        <Paper sx={{ p: 1, mt: 1, boxShadow: 3 }}>
                             <Typography variant="h6">Modo de entrega</Typography>
                             <RadioGroup
                                 row
@@ -354,11 +438,45 @@ const Pago = ({ cart }) => {
                                         onChange={handleEntrega}
                                     />
                                 </Paper>
-                                
+
                             </RadioGroup>
                         </Paper>
                         {entrega === "domicilio" ? paperDomicilio() : null}
-                        <Button sx={{mt: 2, height: 50}}fullWidth onClick={realizarPago} variant="contained">
+                        {entrega === "retiro" ? paperRetiro() : null}
+                        <Paper sx={{ p: 1, mt: 1 }}>
+                            <Typography sx={{ mb: 1 }} variant="h6">Resumen de compra</Typography>
+                            {cart.map((item) => (
+                                <Box>
+                                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                        <Typography key={item.id} variant="subtitle 1">{item.cantidad} x {item.nombre}-{item.tamanio}</Typography>
+                                        <Typography variant="subtitle 1">${item.precio}</Typography>
+                                    </Box>
+                                    <hr />
+                                </Box>
+                            ))}
+                            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                <Typography variant="subtitle 1">Sub-total</Typography>
+                                <Typography variant="subtitle 1">${total}</Typography>
+                            </Box>
+                            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                <Typography variant="subtitle 1">Propina</Typography>
+                                <Typography variant="subtitle 1">${parseInt(propina * total)}</Typography>
+                            </Box>
+                            <hr/>
+                            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                <Typography variant="subtitle 1">Total</Typography>
+                                <Typography variant="subtitle 1">${total + parseInt(propina * total)}</Typography>
+                            </Box>
+                        </Paper>
+                        <Button sx={{
+                            mt: 2, height: 50,
+                            //green hover
+                            "&:hover": {
+                                bgcolor: '#169350',
+                                //slower transition
+                                transition: '0.5s',
+                            },
+                        }} fullWidth onClick={realizarPago} variant="contained">
                             Realizar pago
                         </Button>
                     </Grid>
